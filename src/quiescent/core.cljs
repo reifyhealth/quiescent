@@ -1,6 +1,7 @@
 (ns quiescent.core
   (:require [cljsjs.react]
-            [cljsjs.react.dom])
+            [cljsjs.react.dom]
+            [cljsjs.react-transition-group])
   (:require-macros [quiescent.core :refer [react-method]]))
 
 (def ^:dynamic *component*
@@ -147,7 +148,7 @@
   [node]
   (.unmountComponentAtNode js/ReactDOM node))
 
-(let [factory (.createFactory js/React (.-CSSTransitionGroup (.-addons js/React)))]
+(let [factory (.createFactory js/React (.-CSSTransitionGroup js/ReactTransitionGroup))]
   (defn CSSTransitionGroup
     "Return a CSSTransitionGroup ReactElement, with the specified transition options and children.
     Options must contain at least a :transitionName key.
@@ -160,7 +161,7 @@
     [opts children]
     (factory (clj->js (assoc opts :children children)))))
 
-(let [factory (.createFactory js/React (.-TransitionGroup (.-addons js/React)))]
+(let [factory (.createFactory js/React (.-TransitionGroup js/ReactTransitionGroup))]
   (defn TransitionGroup
     "Return a TransitionGroup ReactElement, with the specified properties and children.
 
