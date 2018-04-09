@@ -1,7 +1,8 @@
 (ns quiescent.core
   (:require [cljsjs.react]
             [cljsjs.react.dom]
-            [cljsjs.react-transition-group])
+            [cljsjs.react-transition-group]
+            [cljsjs.create-react-class])
   (:require-macros [quiescent.core :refer [react-method]]))
 
 (def ^:dynamic *component*
@@ -134,7 +135,7 @@
                               (.-value (.-props *component*))
                               (.-constants (.-props *component*))))}
                  (build-lifecycle-impls opts))
-          react-component (.createClass js/React (clj->js impl))]
+          react-component (js/createReactClass (clj->js impl))]
       (fn [value & constant-args]
         (let [props (js-obj)]
           (set! (.-value props) value)
@@ -179,7 +180,7 @@
 
 (def WrapperComponent
   "Wrapper component used to mix-in lifecycle access"
-  (.createClass js/React
+  (js/createReactClass
      #js {:render
           (fn [] (this-as this (aget (.-props this) "wrappee")))
           :componentDidUpdate
